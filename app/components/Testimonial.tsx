@@ -1,14 +1,15 @@
 "use client";
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import image1 from "../components/images/headshot1.jpg";
 import image2 from "../components/images/headshot2.jpg";
 import image3 from "../components/images/headshot3.jpg";
 import image4 from "../components/images/headshot4.jpeg";
 
 import image5 from "../components/images/headshot5.jpg";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import Testi from "./Testi";
+import useTextRevealAnimate from "./hooks/useTextRevealAnimate";
 const testimonials = [
   {
     name: "John Doe",
@@ -67,9 +68,29 @@ const Testimonial = () => {
   const transformTop = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
   const transformBottom = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
-  const testimonialsIndex = 0;
+  const [testimonialsIndex, setTestimonialIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleClickPrev = () => {
+    setTestimonialIndex((curr) => {
+      if (curr === 0) {
+        return testimonials.length - 1;
+      }
+      return curr - 1;
+    });
+  };
+
+  const handleClickNext = () => {
+    setTestimonialIndex((curr) => {
+      if (curr === testimonials.length - 1) {
+        return 0;
+      }
+      return curr + 1;
+    });
+  };
+
   return (
-    <section className="md:px-10 px-6 py-16 mt-12" id="testimonial">
+    <section className="md:px-10 px-6 py-16 mt-12 relative" id="testimonial">
       <h2
         className="flex flex-col text-5xl md:text-xl lg:text-8xl overflow-hidden"
         ref={scrollRef}
@@ -92,22 +113,30 @@ const Testimonial = () => {
         </motion.span>
       </h2>
       <div className="mt-16">
-        {testimonials.map(
-          ({ name, company, role, quote, image, imagePositionY }, index) =>
-            index === testimonialsIndex && (
-              <Testi
-                name={name}
-                company={company}
-                image={image}
-                quote={quote}
-                role={role}
-                key={name}
-              />
-            )
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {testimonials.map(
+            ({ name, company, role, quote, image, imagePositionY }, index) =>
+              index === testimonialsIndex && (
+                <Testi
+                  name={name}
+                  company={company}
+                  image={image}
+                  quote={quote}
+                  role={role}
+                  key={name}
+                  isAnimating={isAnimating}
+                  setIsAnimating={setIsAnimating}
+                />
+              )
+          )}
+        </AnimatePresence>
       </div>
       <div className="flex items-center gap-6  my-4 ml-6">
-        <button className="border  inline-flex items-center border-stone-400 rounded-full p-4">
+        <button
+          className="border  inline-flex items-center border-stone-400 rounded-full p-4 hover:bg-orange-300 hover:text-white transition-all duration-300  hover:border-orange-300"
+          onClick={handleClickPrev}
+          disabled={isAnimating}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -123,7 +152,11 @@ const Testimonial = () => {
             />
           </svg>
         </button>
-        <button className="border inline-flex items-center border-stone-400 rounded-full p-4 hover:bg-gray-500">
+        <button
+          className="border inline-flex items-center border-stone-400 rounded-full p-4 hover:bg-orange-300 hover:text-white transition-all duration-300 hover:border-orange-300"
+          onClick={handleClickNext}
+          disabled={isAnimating}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

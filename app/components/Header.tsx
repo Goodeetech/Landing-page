@@ -167,7 +167,7 @@ const Header = () => {
             <div>
               <a href="/">
                 <span className="text-2xl text-orange-700 uppercase  font-bold hover:text-yellow-200 ">
-                  Goodee Alex
+                  Jonn Alex
                 </span>
               </a>
             </div>

@@ -19,4 +19,5 @@
 
 .word {
   @apply translate-y-full;
+  will-change: transform;
 }
