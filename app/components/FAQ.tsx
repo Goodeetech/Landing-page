@@ -1,5 +1,9 @@
+"use client";
+
 import clsx from "clsx";
-import React from "react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { twMerge } from "tailwind-merge";
 const faqs = [
   {
     question: "What is your refund policy?",
@@ -29,36 +33,63 @@ const faqs = [
 ];
 
 const FAQ = () => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   return (
     <section className="md:px-10 px-6 py-16 mt-12" id="faq">
       <h2 className="text-4xl md:text-6xl">FAQs</h2>
-      <div className="flex flex-col  mt-10">
+      <div className="flex flex-col  mt-10 cursor-pointer">
         {faqs.map(({ question, answer }, index) => (
-          <div
-            key={index}
-            className={clsx(
-              "flex justify-between items-center border-t last:border-b border-stone-300 py-4"
-            )}
-          >
-            <div>
-              <h2 className="text-2xl md:text-3xl">{question}</h2>
-            </div>
-            <div className="p-2 border border-stone-400 rounded-full ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
+          <div key={index}>
+            <div
+              className={clsx(
+                "flex justify-between items-center border-t last:border-b border-stone-300 py-4"
+              )}
+              onClick={() => {
+                if (selectedIndex === index) {
+                  setSelectedIndex(null);
+                } else {
+                  setSelectedIndex(index);
+                }
+              }}
+            >
+              <div>
+                <h2 className="text-2xl md:text-3xl">{question}</h2>
+              </div>
+              <div
+                className={twMerge(
+                  "p-2 border border-stone-400 rounded-full transition duration-500 ",
+                  index === selectedIndex && "rotate-45"
+                )}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </div>
             </div>
+            <AnimatePresence>
+              {selectedIndex === index && (
+                <motion.div
+                  className=" overflow-hidden "
+                  initial={{ height: 0 }}
+                  animate={{ height: "auto" }}
+                  exit={{ height: 0 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                >
+                  <p className="bg-stone-100 p-4 text-xl">{answer}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
