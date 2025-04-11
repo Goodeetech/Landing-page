@@ -92,7 +92,7 @@ const Testimonial = () => {
   return (
     <section className="md:px-10 px-6 py-16 mt-12 relative" id="testimonial">
       <h2
-        className="flex flex-col text-5xl md:text-xl lg:text-8xl overflow-hidden"
+        className="flex flex-col text-5xl md:text-6xl lg:text-8xl overflow-hidden"
         ref={scrollRef}
       >
         <motion.span

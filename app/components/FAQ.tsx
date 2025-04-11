@@ -42,7 +42,7 @@ const FAQ = () => {
           <div key={index}>
             <div
               className={clsx(
-                "flex justify-between items-center border-t last:border-b border-stone-300 py-4"
+                "flex justify-between items-center border-t last:border-b relative border-stone-300 py-4 group"
               )}
               onClick={() => {
                 if (selectedIndex === index) {
@@ -52,12 +52,23 @@ const FAQ = () => {
                 }
               }}
             >
-              <div>
+              <div
+                className={twMerge(
+                  "absolute left-0 -z-10 h-0 w-full bottom-0 bg-stone-100 group-hover:h-full duration-500 transition-all",
+                  selectedIndex === index && "h-full"
+                )}
+              ></div>
+              <div
+                className={twMerge(
+                  "relative transition-all duration-500",
+                  selectedIndex === index && "lg:px-6"
+                )}
+              >
                 <h2 className="text-2xl md:text-3xl">{question}</h2>
               </div>
               <div
                 className={twMerge(
-                  "p-2 border border-stone-400 rounded-full transition duration-500 ",
+                  "p-2 border border-stone-100 rounded-full transition duration-500 ",
                   index === selectedIndex && "rotate-45"
                 )}
               >
