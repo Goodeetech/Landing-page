@@ -90,20 +90,25 @@ const Testi = (
       </div>
       <div className="md:col-span-3 items-center">
         <blockquote>
-          <div
+          <motion.div
             className="text-3xl md:text-4xl lg:text-6xl mt-8"
             ref={quoteScope}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
           >
             <span>&ldquo;</span>
             {quote}
             <span>&rdquo;</span>
-          </div>
-          <cite
+          </motion.div>
+          <motion.cite
             className="mt-4 md:mt-6 md:text-lg lg:text-xl w-full block"
             ref={citeScope}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             {name}, {role} at {company}
-          </cite>
+          </motion.cite>
         </blockquote>
       </div>
     </div>
